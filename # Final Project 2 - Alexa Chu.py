@@ -32,8 +32,8 @@ csv_file_path = "students.csv"
 # Reading a CSV file into a data frame
 students_df = pd.read_csv(csv_file_path)
 
-# Display the Original Students data frame
-print("Oriignal Students Data Frame:")
+# Display the Original Students' data frame
+print("Orignal Students Data Frame:")
 print(students_df)
 
 # 8_1: Using NumPy Array or Pandas Series for vectorized computation
@@ -61,7 +61,7 @@ print("\n Data Frame with Weighted Average Score:")
 print(students_df)
 
 # 8_3: Using Pandas to get a subset of a Data Frame using a boolean
-# Students with a weighted average score above a 90 will be placed on the dean's list
+# Students with a weighted average score above the user's inputted numeric value will be placed on the dean's list
 user_threshold = float(input("Enter the threshold for the dean's list (numeric value): " )) # Prompt the user to set the threshold
 deans_list_df = students_df[students_df['weighted_average'] > user_threshold]
 print(deans_list_df)
