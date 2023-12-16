@@ -73,11 +73,11 @@ print(deans_list_from_csv)
 
 # Allow users to input their own student
 while True:
-    student_name = input("Enter student name (or type done to finish): "
+    student_name = input("Enter student name (or type done to finish): ")
     if student_name.lower() == 'done':
         break 
     student_id = len(students_list) + 1
-    student_grade = input("Enter student grade: "
+    student_grade = input("Enter student grade: ")
     student_score = int(input("Enter student score: "))
 
     new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score}
