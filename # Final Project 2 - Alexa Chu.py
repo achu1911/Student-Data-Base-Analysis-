@@ -4,39 +4,11 @@ import os
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt
+import re
 
 # Constant values
 weight_score = 0.9
 weight_grade = 0.1 
-
-# 5.7:  Creating a list manually
-# Initial list of students
-initial_students = [
-    {'student_id': 1, 'name': 'Amy', 'grade': 'A', 'score': 90},
-    {'student_id': 2, 'name': 'Bob', 'grade': 'B', 'score': 80},
-    {'student_id': 3, 'name': 'Gerald', 'grade': 'C', 'score': 70}
-]
-# 5.8: Appending a new student, Billy, to the list
-new_student = {'student_id': 4, 'name': 'Billy', 'grade': 'A', 'score': 100}
-initial_students.append(new_student)
-
-# Printing the initial list of students
-print("Initial List of Students:")
-print(initial_students)
-
-# 8_2: Reading in a CSV of data into a data frame object using pandas 
-# Change working directory
-os.chdir(r"C:\Users\alexa\OneDrive\Final Project Coding - INST126") # Using a raw string to avoid needing to use backslashes
-
-# Specify the path to CSV file
-csv_file_path = "students.csv"
-
-# Reading a CSV file into a data frame
-students_df = pd.read_csv(csv_file_path)
-
-# Display the Original Students' data frame
-print("Initial Students Data Frame:")
-print(students_df)
 
 # 8_1: Using NumPy Array or Pandas Series for vectorized computation
 # Function to clean the DataFrame (remove leading spaces, convert to numeric values)
@@ -46,18 +18,75 @@ def clean_dataframe(students_df):
     students_df['grade'] = students_df['grade'].str.strip()
     return students_df
 
-students_df = clean_dataframe(students_df)
-
 # Allow users to input their own student
-while True:
+def get_user_input(student_id):
     student_name = input("Enter student name (or type done to finish): ") # Asks for the student's name
-    if student_name.lower() == 'done': # Allows the user to break the loop by typing 'done'
-        break 
-    student_id = len(initial_students) + 1 # Calculates the new student ID by getting the length and adding 1. 
-    student_grade = input("Enter student grade (A-F): ") # input the student's grade
-    student_score = int(input("Enter student score (numeric value): ")) # Allows user to input student's score and converts it into an integer
-    new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score} # Creates a dictionary with keys. 
-    initial_students.append(new_student)
+    if student_name.lower() == 'done': 
+        return None 
+    student_grade = input("Enter student grade (A-F): ").upper() # input the student's grade
+    try:
+        student_score = int(input("Enter student score (numeric value): ")) # Allows user to input student's score and converts it into an integer
+        new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score} # Creates a dictionary with keys. 
+        print(new_student)
+        return new_student
+    except ValueError: 
+        print("Invalid input. Please enter a numeric score.") # If the user does not input a numeric score, it will prompt an error message
+        return None
+    
+#7.4: Using a regular expression to check that a string matches a certain pattern
+#7.5: You used regular expressions with groupings to extract or change parts of a string.
+# Check name and grade
+def check_name_and_grade(student):
+    pattern = re.compile(r'^A.*?(\w)', re.IGNORECASE) 
+    # Regular expression pattern is created using 're.compile'
+    # The pattern 'r'^A.*?(\w)' is used to match a string that starts with 'A'. 
+    # It captures the first word character
+    # re.IGNORECASe is used to make the matching case-insensitive.
+    match = pattern.match(student['name'] + student['grade']) # match is assigned to the result of applying 'pattern' to the student's nme and grade. Checks if it matches
+    if match:
+        first_letter = match.group(1) # If it is a match, this line will extract the first captured group and assign it to the variable
+        print(f"Student {student['name']} starts with 'A' and the first letter of the grade is {first_letter}.")
+
+# Main Program
+initial_students = [ # 5.7:  Creating a list manually
+    {'student_id': 1, 'name': 'Amy', 'grade': 'A', 'score': 90},
+    {'student_id': 2, 'name': 'Bob', 'grade': 'B', 'score': 80},
+    {'student_id': 3, 'name': 'Gerald', 'grade': 'C', 'score': 70}
+]
+new_student = {'student_id': 4, 'name': 'Billy', 'grade': 'A', 'score': 100} # 5.8: Appending a new student, Billy, to the list
+initial_students.append(new_student)
+
+print("Initial List of Students:") # Printing the initial list of students
+print(initial_students)
+
+# 8_2: Reading in a CSV of data into a data frame object using pandas 
+# Change working directory
+os.chdir(r"C:\Users\alexa\OneDrive\Final Project Coding - INST126") # Using a raw string to avoid needing to use backslashes
+csv_file_path = "students.csv" # Specify the path to CSV file
+students_df = pd.read_csv(csv_file_path) # read_csv is a function provided by Pandas for reading data from a CSV file
+
+# Display the Original Students' data frame
+print("Initial Students Data Frame:")
+print(students_df)
+
+# Clean the initial data frame
+students_df = clean_dataframe(students_df)
+    
+# Allow users to input their own students
+student_id = len(initial_students) + 1 # Calculates the new student ID by getting the length and adding 1. 
+while True:
+    new_student = get_user_input(student_id)
+    if new_student is None:
+        break
+    initial_students.append(new_student) # Adds the information of the new student to the initial_students list
+    check_name_and_grade(new_student) # The function checks if the student's name starts with 'A' 
+    student_id += 1
+    
+#7.1: Using a string method to split a string into a list of smaller strings
+#Allow users to input their own student names, separated by commas.
+names_input = input("Enter student names (separated by commas: ") 
+user_names = names_input.split(', ')
+print("User inputted Names:", user_names)
 
 # Display the final list of students ( with user input) as a data frame
 final_students_df = pd.DataFrame(initial_students)
