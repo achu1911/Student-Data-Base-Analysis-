@@ -20,7 +20,7 @@ initial_students = [
 new_student = {'student_id': 4, 'name': 'Billy', 'grade': 'A', 'score': 100}
 initial_students.append(new_student)
 
-# Printing the original list of students
+# Printing the initial list of students
 print("Initial List of Students:")
 print(initial_students)
 
@@ -50,13 +50,13 @@ students_df = clean_dataframe(students_df)
 
 # Allow users to input their own student
 while True:
-    student_name = input("Enter student name (or type done to finish): ")
-    if student_name.lower() == 'done':
+    student_name = input("Enter student name (or type done to finish): ") # Asks for the student's name
+    if student_name.lower() == 'done': # Allows the user to break the loop by typing 'done'
         break 
-    student_id = len(initial_students) + 1
-    student_grade = input("Enter student grade (A-F): ")
-    student_score = int(input("Enter student score (numeric value): "))
-    new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score}
+    student_id = len(initial_students) + 1 # Calculates the new student ID by getting the length and adding 1. 
+    student_grade = input("Enter student grade (A-F): ") # input the student's grade
+    student_score = int(input("Enter student score (numeric value): ")) # Allows user to input student's score and converts it into an integer
+    new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score} # Creates a dictionary with keys. 
     initial_students.append(new_student)
 
 # Display the final list of students ( with user input) as a data frame
@@ -71,9 +71,11 @@ final_students_df = clean_dataframe(final_students_df)
 # 90% weight on scores, 10% weight on grades
 def calculate_weighted_average(students_df):
     students_df['weighted_average'] = np.average( # This function computes the weighted average along the axis
+        # Create a list of two arrays. The first array is the 'score' column and the second array is the result of applying a lambda function. 
+        # The lambda function converts each letter grade (A to F) to a numeric value.
         [students_df['score'], students_df['grade'].apply(lambda x: ord(x) - ord('A') + 1)], # Each grade is converted to a numeric value
         axis=0, # The averaging is done along the first rows
-        weights=[weight_score, weight_grade] # Provides the weights for the two arrays
+        weights=[weight_score, weight_grade] # Provides the weights for the two arrays. weight_score = 0.9 and weight_grade = 0.1 
     )
 # Calculate the weighted average for the final Data Frame 
 calculate_weighted_average(final_students_df) 
@@ -86,7 +88,7 @@ print(final_students_df)
 # Students with a weighted average score above the user's inputted numeric value will be placed on the dean's list
 # Function to filter students for the Dean's list
 def get_deans_list(students_df, threshold):
-    deans_list_df = students_df[students_df['weighted_average'] > threshold]
+    deans_list_df = students_df[students_df['weighted_average'] > threshold] # Sets the students on the deans_list to those with a weighted average above the threshold
     return deans_list_df # Return the filtered data frame 
 
 # Get the user's threshold 
@@ -100,7 +102,7 @@ print("\n Dean's List with Threshold: ")
 print(deans_list_df)
 
 # 8_4: Writing the changed data to CSV using Pandas
-deans_list_df.to_csv('deans_list.csv', index=False)
-deans_list_from_csv = pd.read_csv('deans_list.csv')
+deans_list_df.to_csv('deans_list.csv', index=False) #Uses the to_csv to write the contents to a CSV file. The index=false indicates that the DataFrame index should not be included in the file.
+deans_list_from_csv = pd.read_csv('deans_list.csv') # Reads the contents of the CSV file into a new Data Frame
 print("\n Dean's List from CSV: ")
 print(deans_list_from_csv)
