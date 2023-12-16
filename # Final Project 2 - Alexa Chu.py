@@ -71,3 +71,18 @@ deans_list_df.to_csv('deans_list.csv', index=False)
 deans_list_from_csv = pd.read_csv('deans_list.csv')
 print(deans_list_from_csv)
 
+# Allow users to input their own student
+while True:
+    student_name = input("Enter student name (or type done to finish): "
+    if student_name.lower() == 'done':
+        break 
+    student_id = len(students_list) + 1
+    student_grade = input("Enter student grade: "
+    student_score = int(input("Enter student score: "))
+
+    new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score}
+    students_list.append(new_student)
+
+    # Display the final list of students ( with user input)
+    print("Final List of Students:")
+    print(students_list)
