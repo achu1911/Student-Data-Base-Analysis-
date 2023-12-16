@@ -83,6 +83,7 @@ while True:
     new_student = {'student_id': student_id, 'name': student_name, 'grade': student_grade, 'score': student_score}
     students_list.append(new_student)
 
-    # Display the final list of students ( with user input)
-    print("Final List of Students:")
-    print(students_list)
+    # Display the final list of students ( with user input) as a data frame
+final_stuents_df = pd.DataFrame(students_list)
+print("\nFinal List of Students:")
+print(final_students_df) 
