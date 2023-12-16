@@ -84,6 +84,6 @@ while True:
     students_list.append(new_student)
 
     # Display the final list of students ( with user input) as a data frame
-final_stuents_df = pd.DataFrame(students_list)
+final_students_df = pd.DataFrame(students_list)
 print("\nFinal List of Students:")
 print(final_students_df) 
